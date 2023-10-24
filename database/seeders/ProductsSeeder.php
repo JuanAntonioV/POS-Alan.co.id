@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,8 @@ class ProductsSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('Products')->insert([
+
+        $products = [
             [
                 'name' => 'Cumi Tepung',
                 'price' => 20000, // Harga dalam format IDR
@@ -75,6 +77,10 @@ class ProductsSeeder extends Seeder
                 'image' => 'https://asset.kompas.com/crops/_LjV7fswj8rmE70TvLkPwpSgeCo=/0x0:780x390/1200x800/data/photo/2015/05/07/1030021shutterstock-254781634780x390.jpg',
             ],
 
-        ]);
+        ];
+
+        foreach ($products as $product) {
+            Product::create($product);
+        }
     }
 }
