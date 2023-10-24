@@ -16,11 +16,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('HomePage', [
-        'title' => 'Welcome Page',
-    ]);
-});
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
