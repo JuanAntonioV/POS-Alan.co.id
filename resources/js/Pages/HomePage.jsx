@@ -125,15 +125,15 @@ function HomePage() {
                         </div>
                     </header>
                     <div className="grid grid-cols-1 md:grid-cols-9 gap-10">
-                        <div className="w-full mr-4 col-span-1 md:col-span-7">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="w-full mr-4 col-span-1 md:col-span-9 lg:col-span-6 2xl:col-span-7">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
                                 {foodItems.map((foodItem, index) => (
                                     <FoodItem key={index} addToBill={addToBill} foodItem={foodItem} />
                                 ))}
                             </div>
                         </div>
 
-                        <div className="w-full col-span-1 md:col-span-2">
+                        <div className="w-full col-span-1 md:col-span-10 lg:col-span-3 2xl:col-span-2">
                             <div className="bg-white rounded-2xl py-4 border">
                                 <div className="text-xl font-bold mb-4 text-center">
                                     New Customer
