@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, Head } from "@inertiajs/react";
+import FoodItem from "@/Components/FoodItem.jsx";
 
 function HomePage() {
     const [foodItems, setFoodItems] = useState([
@@ -113,40 +114,27 @@ function HomePage() {
     return (
         <>
             <Head title="Restaurant POS" />
-            <div className="font-sans bg-gray-200 p-4">
+            <div className="font-sans bg-gray-200 p-4 min-h-[calc(100vh-5rem)]">
                 <div className="text-center text-2xl font-bold mb-4">
                     Restaurant POS
                 </div>
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                    <div className="flex">
-                        <div className="w-3/4 mr-4">
-                            <div className="grid grid-cols-4 gap-4">
-                                {foodItems.map((foodItem) => (
-                                    <div
-                                        key={foodItem.id}
-                                        className="bg-white rounded-lg shadow-md overflow-hidden"
-                                    >
-                                        <img
-                                            src={foodItem.image}
-                                            alt={foodItem.name}
-                                            className="w-auto h-48 object-cover"
-                                        />
-                                        <div className="text-center py-2 text-base bg-gray-300">
-                                            {foodItem.name}
-                                        </div>
-                                        <button
-                                            onClick={() => addToBill(foodItem)}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-2 text-center w-full"
-                                        >
-                                            Add
-                                        </button>
-                                    </div>
+                <div className="bg-white rounded-xl px-6 py-8 shadow-md space-y-4 min-h-[calc(100vh-5rem)]">
+                    <header>
+                        <div className="flex justify-between items-center">
+                            <h2 className={'font-bold'}>Daftar Menu ({foodItems.length})</h2>
+                        </div>
+                    </header>
+                    <div className="grid grid-cols-1 md:grid-cols-9 gap-10">
+                        <div className="w-full mr-4 col-span-1 md:col-span-7">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                {foodItems.map((foodItem, index) => (
+                                    <FoodItem key={index} addToBill={addToBill} foodItem={foodItem} />
                                 ))}
                             </div>
                         </div>
 
-                        <div className="w-1/4">
-                            <div className="bg-white rounded-lg p-4 shadow-md">
+                        <div className="w-full col-span-1 md:col-span-2">
+                            <div className="bg-white rounded-2xl py-4 border">
                                 <div className="text-xl font-bold mb-4 text-center">
                                     New Customer
                                 </div>
@@ -154,67 +142,71 @@ function HomePage() {
                                     Dine In
                                 </div>
 
-                                <div className="w-3/2">
-                                    <table className="w-full table-auto mb-4">
-                                        <thead>
+                                <div className="w-full">
+                                    <div className={'h-96 overflow-auto px-4'}>
+                                        <table className="w-full table-auto mb-4">
+                                            <thead>
                                             <tr className="border-b">
-                                                <th className="text-left">1</th>
-                                                <th className="text-center"></th>
-                                                <th className="text-right">
+                                                <th className="text-left py-2">1</th>
+                                                <th className="text-center py-2"></th>
+                                                <th className="text-right py-2">
                                                     View Table
                                                 </th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
+                                            </thead>
+                                            <tbody>
                                             {billItems.map((billItem) => (
                                                 <tr
                                                     key={billItem.id}
                                                     className="border-b"
                                                 >
-                                                    <td className="text-left">
+                                                    <td className="text-left py-2">
                                                         {billItem.name}
                                                     </td>
-                                                    <td className="text-center">{`x${billItem.quantity}`}</td>
-                                                    <td className="text-right">
+                                                    <td className="text-center py-2">{`x${billItem.quantity}`}</td>
+                                                    <td className="text-right py-2">
                                                         {formatPrice(
                                                             billItem.price
                                                         )}
                                                     </td>
                                                 </tr>
                                             ))}
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                    <p className="mt-4">
+                                    <p className="mt-4 px-4">
                                         Total: {calculateTotal()}
                                     </p>
-                                    <p className="text-center mt-4">
-                                        clear sale
-                                    </p>
-                                    <div className="mt-2 flex">
-                                        <button
-                                            onClick={() => alert("Bill Saved")}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-2 flex-1"
-                                        >
-                                            Save Bill
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                alert("Bill Printed")
-                                            }
-                                            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded ml-2 flex-1"
-                                        >
-                                            Print Bill
-                                        </button>
-                                    </div>
-                                    <div className="mt-2 flex">
-                                        <button
-                                            onClick={() => alert("Charge")}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded ml-2 flex-1"
-                                        >
-                                            Charge
-                                        </button>
-                                    </div>
+                                        <div className={'mt-6 space-y-4 px-4'}>
+                                            <button className="text-center py-3 bg-gray-100 rounded-xl w-full">
+                                                Clear Sale
+                                            </button>
+                                            <div className="mt-2 flex gap-4">
+                                                <button
+                                                    onClick={() => alert("Bill Saved")}
+                                                    className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 flex-1 rounded-xl"
+                                                >
+                                                    Save Bill
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        alert("Bill Printed")
+                                                    }
+                                                    className="bg-blue-500 hover:bg-blue-700 text-white py-4 px-4 rounded-xl flex-1"
+                                                >
+                                                    Print Bill
+                                                </button>
+                                            </div>
+                                            <div className="mt-2 flex">
+                                                <button
+                                                    onClick={() => alert("Charge")}
+                                                    className="bg-green-500 hover:bg-blue-700 text-white py-4 px-4 rounded-xl flex-1"
+                                                >
+                                                    Charge
+                                                </button>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
