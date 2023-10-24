@@ -54,7 +54,7 @@ class ProductsSeeder extends Seeder
             [
                 'name' => 'Kepiting Saus Padang',
                 'price' => 50000, // Harga dalam format IDR
-                'image' => 'ttps://cdn0-production-images-kly.akamaized.net/_n0w-LsIHw7vPwJqL5g-X2FyVtQ=/640x360/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/2355329/original/078016000_1536562953-resep-masakan-sehari-hari.jpg',
+                'image' => 'https://cdn0-production-images-kly.akamaized.net/_n0w-LsIHw7vPwJqL5g-X2FyVtQ=/640x360/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/2355329/original/078016000_1536562953-resep-masakan-sehari-hari.jpg',
             ],
             [
                 'name' => 'Es Teh Manis',

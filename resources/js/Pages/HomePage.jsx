@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Link, Head } from "@inertiajs/react";
+import React, {useEffect, useState} from "react";
+import {Link, Head} from "@inertiajs/react";
 import FoodItem from "@/Components/FoodItem.jsx";
 import ChargePopup from "@/Components/ChargePopup.jsx";
-import { toast, ToastContainer  } from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function HomePage({ products }) {
+function HomePage({products, success}) {
     const [totalCharge, setTotalCharge] = useState(0);
 
     const [foodItems, setFoodItems] = useState([]);
@@ -29,7 +29,7 @@ function HomePage({ products }) {
         if (existingItemIndex !== -1) {
             updatedBill[existingItemIndex].quantity += 1;
         } else {
-            updatedBill.push({ ...foodItem, quantity: 1 });
+            updatedBill.push({...foodItem, quantity: 1});
         }
 
         setBillItems(updatedBill);
@@ -52,7 +52,11 @@ function HomePage({ products }) {
     };
 
     useEffect(() => {
-        setTotalCharge(calculateTotal());
+        const total = billItems.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+        );
+        setTotalCharge(total);
     }, [billItems]);
 
     const clearBill = () => {
@@ -66,22 +70,53 @@ function HomePage({ products }) {
 
     const saveBill = () => {
         toast.success('Save Biil Berhasil Disimpan', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        });
+    }
+
+    useEffect(() => {
+        if (success) {
+            setBillItems([]);
+            toast.success('Bill Berhasil Dibayar', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        }
+    }, [success]);
+
+    const handlePrintBill = () => {
+        toast.success('Print Bill Berhasil', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
         });
     }
 
     return (
         <>
-            <Head title="Restaurant POS" />
-            <ToastContainer />
-            {isPopupOpen && <ChargePopup setIsPopupOpen={setIsPopupOpen} total={totalCharge} />}
+            <Head title="Restaurant POS"/>
+            <ToastContainer/>
+            {isPopupOpen &&
+                <ChargePopup setIsPopupOpen={setIsPopupOpen} total={totalCharge} billItems={billItems}
+                             clearBillItems={clearBill}/>}
             <div className="font-sans bg-gray-200 p-4 min-h-[calc(100vh-5rem)]">
                 <div className="text-center text-2xl font-bold mb-4">
                     Restaurant POS
@@ -96,7 +131,8 @@ function HomePage({ products }) {
                     </header>
                     <div className="grid grid-cols-1 md:grid-cols-9 gap-10">
                         <div className="w-full mr-4 col-span-1 md:col-span-9 lg:col-span-6 2xl:col-span-7">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+                            <div
+                                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
                                 {foodItems.length === 0 ? (
                                     <div className="text-center col-span-4">
                                         <p className="text-xl font-bold">
@@ -131,51 +167,51 @@ function HomePage({ products }) {
                                     <div className={"h-96 overflow-auto px-4"}>
                                         <table className="w-full table-auto mb-4">
                                             <thead>
-                                                <tr className="border-b">
-                                                    <th className="text-left py-2">
-                                                        1
-                                                    </th>
-                                                    <th className="text-center py-2"></th>
-                                                    <th className="text-right py-2">
-                                                        View Table
-                                                    </th>
-                                                </tr>
+                                            <tr className="border-b">
+                                                <th className="text-left py-2">
+                                                    1
+                                                </th>
+                                                <th className="text-center py-2"></th>
+                                                <th className="text-right py-2">
+                                                    View Table
+                                                </th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                {billItems.length === 0 ? (
-                                                    <tr>
-                                                        <td
-                                                            colSpan="3"
-                                                            className="text-center py-4"
+                                            {billItems.length === 0 ? (
+                                                <tr>
+                                                    <td
+                                                        colSpan="3"
+                                                        className="text-center py-4"
+                                                    >
+                                                        No items in the
+                                                        bill.
+                                                    </td>
+                                                </tr>
+                                            ) : billItems.length > 0 ? (
+                                                billItems.map(
+                                                    (billItem) => (
+                                                        <tr
+                                                            key={
+                                                                billItem.id
+                                                            }
+                                                            className="border-b"
                                                         >
-                                                            No items in the
-                                                            bill.
-                                                        </td>
-                                                    </tr>
-                                                ) : billItems.length > 0 ? (
-                                                    billItems.map(
-                                                        (billItem) => (
-                                                            <tr
-                                                                key={
-                                                                    billItem.id
+                                                            <td className="text-left py-2">
+                                                                {
+                                                                    billItem.name
                                                                 }
-                                                                className="border-b"
-                                                            >
-                                                                <td className="text-left py-2">
-                                                                    {
-                                                                        billItem.name
-                                                                    }
-                                                                </td>
-                                                                <td className="text-center py-2">{`x${billItem.quantity}`}</td>
-                                                                <td className="text-right py-2">
-                                                                    {formatPrice(
-                                                                        billItem.price
-                                                                    )}
-                                                                </td>
-                                                            </tr>
-                                                        )
+                                                            </td>
+                                                            <td className="text-center py-2">{`x${billItem.quantity}`}</td>
+                                                            <td className="text-right py-2">
+                                                                {formatPrice(
+                                                                    billItem.price
+                                                                )}
+                                                            </td>
+                                                        </tr>
                                                     )
-                                                ) : null}
+                                                )
+                                            ) : null}
                                             </tbody>
                                         </table>
                                     </div>
@@ -202,9 +238,7 @@ function HomePage({ products }) {
                                                 Save Bill
                                             </button>
                                             <button
-                                                onClick={() =>
-                                                    alert("Bill Printed")
-                                                }
+                                                onClick={handlePrintBill}
                                                 className="bg-blue-500 hover:bg-blue-600 text-white py-4 px-4 rounded-xl transition disabled:opacity-50 flex-1"
                                                 disabled={
                                                     billItems.length === 0
